@@ -307,27 +307,71 @@
         </div>
     </div>
 
-    <script>
+        <script>
         function toggleChat() {
             const chatContainer = document.getElementById('chatContainer');
             chatContainer.classList.toggle('closed');
         }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') { sendMessage(); }
         }
+
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const messageText = input.value.trim();
             if (!messageText) return;
 
             const messagesContainer = document.getElementById('chatMessages');
+            
+            // 1. Print User Message
             const userDiv = document.createElement('div');
             userDiv.className = 'message user-message';
             userDiv.innerText = messageText;
             messagesContainer.appendChild(userDiv);
 
+            // Clear input and scroll
             input.value = '';
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // 2. Add "Typing..." delay for realism
+            setTimeout(() => {
+                generateBotResponse(messageText, messagesContainer);
+            }, 600);
+        }
+
+        function generateBotResponse(userText, container) {
+            const lowerText = userText.toLowerCase();
+            let replyText = "";
+
+            // --- THE LOGIC MATRIX ---
+
+            if (lowerText.includes("military") || lowerText.includes("marine") || lowerText.includes("usmc")) {
+                replyText = "Jeremy is a United States Marine Corps Veteran. He brings the rigorous discipline, rapid decision-making, and high-pressure execution of his military background directly into his IT and Product Management methodologies.";
+            } 
+            else if (lowerText.includes("skills") || lowerText.includes("tech") || lowerText.includes("certifications")) {
+                replyText = "Jeremy specializes in IT Architecture and Product Management. He is an AWS Certified Cloud Practitioner, holds CompTIA SecurityX (CASP+) and Security+, and is a Penetration Testing Bootcamp graduate.";
+            }
+            else if (lowerText.includes("education") || lowerText.includes("degree") || lowerText.includes("wgu")) {
+                replyText = "He is currently an MS Candidate in Product Management at Western Governors University (WGU), aggressively bridging the gap between technical infrastructure and end-to-end product lifecycles.";
+            }
+            else if (lowerText.includes("contact") || lowerText.includes("email") || lowerText.includes("hire") || lowerText.includes("reach")) {
+                // Generates a clickable email button directly inside the chat
+                replyText = "The fastest way to reach Jeremy for roles in Product Management or IT Architecture is directly via email.<br><br><a href='mailto:jeremydowdy.usa@gmail.com?subject=Reaching out from your Portfolio' style='display:inline-block; padding:8px 16px; background:#00ff66; color:#000; border-radius:20px; text-decoration:none; font-weight:600; font-size:0.9em; box-shadow: 0 4px 10px rgba(0,255,102,0.3);'>Email Jeremy Directly</a>";
+            }
+            else {
+                // The default fallback response
+                replyText = "I'm focused on getting Jeremy hired! Ask me about his <strong>skills</strong>, his <strong>military</strong> background, his <strong>education</strong>, or how to <strong>contact</strong> him.";
+            }
+
+            // 3. Print Bot Message
+            const botDiv = document.createElement('div');
+            botDiv.className = 'message ai-message';
+            botDiv.innerHTML = replyText; // innerHTML allows the email button to render
+            container.appendChild(botDiv);
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
         }
     </script>
 </body>
