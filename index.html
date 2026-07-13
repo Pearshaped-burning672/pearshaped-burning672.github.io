@@ -179,26 +179,35 @@
             flex-direction: column;
             gap: 12px;
         }
-        .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
-        .ai-message {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            align-self: flex-start;
-            border-top-left-radius: 2px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .user-message {
-            background-color: #0b2046;
-            color: #ffffff;
-            align-self: flex-end;
-            border-top-right-radius: 2px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            // 1. Print User Message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = messageText;
+            messagesContainer.appendChild(userDiv);
+
+            // Clear input and scroll
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // 2. Show "Typing..." Indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai-message typing-indicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // 3. Wait 1.5 seconds, remove typing indicator, and print response
+            setTimeout(() => {
+                messagesContainer.removeChild(typingDiv);
+                generateBotResponse(messageText, messagesContainer);
+            }, 1500);
         }
         .chat-input-area {
             padding: 15px;
