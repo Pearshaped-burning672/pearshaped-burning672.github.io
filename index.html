@@ -113,6 +113,120 @@
             color: #ffffff; 
             letter-spacing: 0.5px;
         }
+
+                /* ==========================================================================
+           AI Recruiter Assistant - Liquid Dark Glass Interface
+           ========================================================================== */
+        .chat-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .chat-container.closed {
+            height: 50px;
+            width: 260px;
+            cursor: pointer;
+        }
+        .chat-header {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            user-select: none;
+        }
+        .chat-status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ff66;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 8px #00ff66;
+        }
+        .chat-header h3 {
+            margin: 0;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: #ffffff;
+            flex-grow: 1;
+        }
+        .chat-toggle-icon {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+        .chat-container.closed .chat-toggle-icon {
+            transform: rotate(180deg);
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .ai-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            align-self: flex-start;
+            border-top-left-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .user-message {
+            background-color: #0b2046;
+            color: #ffffff;
+            align-self: flex-end;
+            border-top-right-radius: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .chat-input-area {
+            padding: 15px;
+            display: flex;
+            gap: 8px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .chat-input-area input {
+            flex-grow: 1;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 14px;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 0.9em;
+            outline: none;
+        }
+        .chat-input-area button {
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 0 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.85em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -170,5 +284,52 @@
         </ul>
     </section>
 
+    <!-- AI Recruiter Assistant UI -->
+    <div class="chat-container closed" id="chatContainer">
+        <!-- Chat Header -->
+        <div class="chat-header" onclick="toggleChat()">
+            <div class="chat-status-dot"></div>
+            <h3>Jeremy's AI Assistant</h3>
+            <span class="chat-toggle-icon" id="chatToggleIcon">▲</span>
+        </div>
+        
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                Hi, I'm Jeremy's AI Wingman. Ask me anything about his military background, IT architecture expertise, or Product Management philosophy.
+            </div>
+        </div>
+        
+        <!-- Chat Input Area -->
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.classList.toggle('closed');
+        }
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') { sendMessage(); }
+        }
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            const messagesContainer = document.getElementById('chatMessages');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = messageText;
+            messagesContainer.appendChild(userDiv);
+
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
 </body>
 </html>
+    
